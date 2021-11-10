@@ -176,22 +176,22 @@ pre code {
 <pre class="r"><code>x_vec = rnorm(25, mean = 5, sd = 4)
 
 (x_vec - mean(x_vec))/sd(x_vec)</code></pre>
-<pre><code>##  [1]  0.06578573 -0.74798649  0.04747565  2.32018746  0.39668792 -0.86050305
-##  [7] -1.83171903  1.32128389 -0.05272751 -1.31729996  0.05252817  0.68521288
-## [13]  0.21284421  0.70453960  1.30495837 -1.73914625 -1.06887827 -0.17674430
-## [19] -0.31619426 -1.02187151  0.30141307 -0.01328378  1.31303899 -0.20866081
-## [25]  0.62905928</code></pre>
+<pre><code>##  [1] -1.6760253 -0.8916621  1.3150088  0.7247873  0.8709204 -0.4293798
+##  [7] -0.1021140 -0.5298385 -0.4505753 -0.6950559 -1.4093327  0.3104144
+## [13]  0.1851096  0.9697699  1.5263301  0.3571191  1.1256887  1.7948712
+## [19] -0.8528899  0.4337854 -1.1823773 -0.7146050  0.1456283 -1.6439776
+## [25]  0.8184002</code></pre>
 <pre class="r"><code>z_scores = function(x) {
   z = (x - mean(x))/sd(x)
   return(z)
 }
 
 z_scores(x = x_vec)</code></pre>
-<pre><code>##  [1]  0.06578573 -0.74798649  0.04747565  2.32018746  0.39668792 -0.86050305
-##  [7] -1.83171903  1.32128389 -0.05272751 -1.31729996  0.05252817  0.68521288
-## [13]  0.21284421  0.70453960  1.30495837 -1.73914625 -1.06887827 -0.17674430
-## [19] -0.31619426 -1.02187151  0.30141307 -0.01328378  1.31303899 -0.20866081
-## [25]  0.62905928</code></pre>
+<pre><code>##  [1] -1.6760253 -0.8916621  1.3150088  0.7247873  0.8709204 -0.4293798
+##  [7] -0.1021140 -0.5298385 -0.4505753 -0.6950559 -1.4093327  0.3104144
+## [13]  0.1851096  0.9697699  1.5263301  0.3571191  1.1256887  1.7948712
+## [19] -0.8528899  0.4337854 -1.1823773 -0.7146050  0.1456283 -1.6439776
+## [25]  0.8184002</code></pre>
 <pre class="r"><code>z_scores(3)</code></pre>
 <pre><code>## [1] NA</code></pre>
 <pre class="r"><code>z_scores(c(&quot;a&quot;,&quot;b&quot;,&quot;c&quot;))</code></pre>
@@ -211,6 +211,76 @@ z_scores(x = x_vec)</code></pre>
   z = (x - mean(x))/sd(x)
   return(z)
 }</code></pre>
+</div>
+<div id="multiple-outcomes" class="section level2">
+<h2>Multiple outcomes</h2>
+<p>Return a output dataframe</p>
+<pre class="r"><code>mean_and_sd = function(x) {
+  
+  if (!is.numeric(x)){
+    stop(&quot;x needs to be numeric&quot;)
+  }
+  
+  if (length(x)&lt;3){
+    stop(&quot;x should have at least 3 numbers&quot;)
+  }
+  
+  mean_x = mean(x)
+  sd_x = sd(x)
+  
+  output_df = tibble(
+    mean = mean_x,
+    sd = sd_x
+  )
+  
+  return(output_df)
+}</code></pre>
+<pre class="r"><code>mean_and_sd(x_vec)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##    mean    sd
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  5.13  4.12</code></pre>
+<p>How to debug?</p>
+<pre class="r"><code># create an x
+x = x_vec
+
+#Then can check those inside the function
+
+#Don&#39;t forget to remove x
+rm(x)</code></pre>
+</div>
+<div id="different-sample-sizes-means-and-sds" class="section level2">
+<h2>different sample sizes, means and sds</h2>
+<pre class="r"><code>sim_data = 
+  tibble(
+    x = rnorm(30, mean = 2, sd = 3)
+  )
+
+sim_data %&gt;% 
+  summarize(
+    mean = mean(x),
+    sd = sd(x)
+  )</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##    mean    sd
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1  2.82  2.67</code></pre>
+<p>Functions that simulates data, compute mean and sd</p>
+<pre class="r"><code>sim_mean_sd = function(n, mu = 0, sigma = 1){
+  sim_data = tibble(
+    x = rnorm(n,mean = mu,sd = sigma)
+  )
+  
+   sim_data %&gt;% 
+     summarize(mean = mean(x),
+                     sd = sd(x))
+}
+
+sim_mean_sd(30)</code></pre>
+<pre><code>## # A tibble: 1 x 2
+##    mean    sd
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1 0.259  1.21</code></pre>
 </div>
 
 

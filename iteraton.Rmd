@@ -70,16 +70,89 @@ z_scores = function(x) {
 
 ```
 
+## Multiple outcomes
+Return a output dataframe
+
+
+```{r}
+mean_and_sd = function(x) {
+  
+  if (!is.numeric(x)){
+    stop("x needs to be numeric")
+  }
+  
+  if (length(x)<3){
+    stop("x should have at least 3 numbers")
+  }
+  
+  mean_x = mean(x)
+  sd_x = sd(x)
+  
+  output_df = tibble(
+    mean = mean_x,
+    sd = sd_x
+  )
+  
+  return(output_df)
+}
+
+```
+
+
+```{r}
+mean_and_sd(x_vec)
+```
+
+
+How to debug?
+
+```{r}
+# create an x
+x = x_vec
+
+#Then can check those inside the function
+
+#Don't forget to remove x
+rm(x)
+
+```
+
+
+## different sample sizes, means and sds
+
+```{r}
+sim_data = 
+  tibble(
+    x = rnorm(30, mean = 2, sd = 3)
+  )
+
+sim_data %>% 
+  summarize(
+    mean = mean(x),
+    sd = sd(x)
+  )
 
 
 
+```
 
 
+Functions that simulates data, compute mean and sd
 
+```{r}
+sim_mean_sd = function(n, mu = 0, sigma = 1){
+  sim_data = tibble(
+    x = rnorm(n,mean = mu,sd = sigma)
+  )
+  
+   sim_data %>% 
+     summarize(mean = mean(x),
+                     sd = sd(x))
+}
 
+sim_mean_sd(30)
 
-
-
+```
 
 
 
